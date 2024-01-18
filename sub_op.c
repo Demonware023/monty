@@ -22,7 +22,7 @@ void sub_op(stack_t **head, unsigned int line_number)
 	else
 	{
 		var.head = var.head->next;
-		var.head->n -= temp->n;
+		var.head->n = var.head->n - temp->n;
 		free(temp);
 	}
 }

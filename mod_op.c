@@ -30,7 +30,7 @@ void mod_op(stack_t **head, unsigned int line_number)
 			exit(EXIT_FAILURE);
 		}
 
-		var.head->n %= temp->n;
+		var.head->n = var.head->n % temp->n;
 		free(temp);
 	}
 }

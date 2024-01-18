@@ -27,7 +27,7 @@ void div_op(stack_t **head, unsigned int line_number)
 			free(temp);
 			exit(EXIT_FAILURE);
 		}
-		var.head->n /= temp->n;
+		var.head->n = var.head->n / temp->n;
 		free(temp);
 	}
 }
