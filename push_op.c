@@ -1,60 +1,31 @@
 #include "monty.h"
 
 /**
-  * push_op - pushes a new node to the top of the stack.
-  * @head: Head pointer to the first item on top of the stack.
-  * @line_number: Tracks lines on the monty_file.
+  * push - push an new element onto the stack LIFO.
+  * @stack: pointer to the stack structure.
+  * @n: element to push to the stack.
   *
-  * Return: void
+  * Return: newnode.
   */
-
-void push_op(stack_t **head, unsigned int line_number)
+void push_op(stack_t **stack, unsigned int line_number)
 {
-	stack_t *newnode = NULL;
-	char *num = NULL;
-	int n = 0, i = 0;
-	(void)head;
-
-	num = strtok(NULL, " \t\n");
-	if (num == NULL)
-	{
-		fprintf(stderr, "L%u: usuage: push integer\n", line_number);
-		want_to_be_free();
-		exit(EXIT_FAILURE);
-	}
-	if (num[i] == '-')
-	{
-		i++;
-	}
-	for (; num[i]; i++)
-	{
-		if (num[i] < '0' || num[i] > '9')
-		{
-			fprintf(stderr, "L%u: usage: push integer\n", line_number);
-			want_to_be_free();
-			exit(EXIT_FAILURE);
-		}
-	}
-	newnode = malloc(sizeof(stack_t));
-	if (newnode == NULL)
+	stack_t *new = malloc(sizeof(stack_t));
+	if (new == NULL)
 	{
 		fprintf(stderr, "Error: malloc failed\n");
-		want_to_be_free();
+		want_to_be_free(stack);
 		exit(EXIT_FAILURE);
 	}
-	n = atoi(num);
-	newnode->n = n;
-	newnode->prev = NULL;
-	newnode->next = NULL;
+
+	(void)line_number;
 	
-	if (var.head == NULL)
+	if (*stack)
 	{
-		var.head = newnode;
+		(*stack)->prev = new;
 	}
-	else
-	{
-		newnode->next = var.head;
-		var.head->prev = newnode;
-		var.head = newnode;
-	}
+	
+	new->prev = NULL;
+	new->next = *stack;
+	new->n = 0;
+	*stack = new;
 }

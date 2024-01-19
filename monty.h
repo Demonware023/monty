@@ -36,68 +36,25 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-/**
-  * struct variable_a - global variables in struct.
-  * @monty_file: file descriptor
-  * @buffer: buffer
-  * @head: points to the head of the list.
-  *
-  * Description: using global variables and extern.
-  */
-typedef struct variable_a
-{
-	FILE *monty_file;
-	char *buffer;
-	stack_t *head;
-} variable_b;
+extern FILE *file;
 
-extern variable_b var;
-variable_b var;
-
-/* Gets line in the struct*/
-void get_func(unsigned int line_number);
-
-/* Frees struct*/
-void want_to_be_free(void);
-
-/* Error handling*/
+/* FUNCTION PROTOTYPES*/
+void (*get_func(stack_t **stack, int l, char *code))(stack_t **, unsigned int);
 void err(void);
+void push(stack_t **stack, unsigned int line_number, char *pushnum);
+void want_to_be_free(stack_t **stack);
+
+/* STACK OPERATIONS*/
+void push_op(stack_t **stack, unsigned int line_number);
+void pall_op(stack_t **stack, unsigned int line_number);
+void pint_op(stack_t **stack, unsigned int line_number);
+void pop_op(stack_t **stack, unsigned int line_number);
+void swap_op(stack_t **stack, unsigned int line_number);
+void add_op(stack_t **stack, unsigned int line_number);
+void nop_op(stack_t **stack, unsigned int line_number);
+void sub_op(stack_t **stack, unsigned int line_number);
 
 /* Getline function declaration*/
 ssize_t getline(char **lineptr, size_t *n, FILE *stream);
-
-/* Push item into stack operation*/
-void push_op(stack_t **head, unsigned int line_number);
-
-/* Print all items in the doubly linked list stack*/
-void pall_op(stack_t **head, unsigned int line_number);
-
-/* Prints the value at the top of the stack*/
-void pint_op(stack_t **head, unsigned int line_number);
-
-/* Removes the top element of the stack*/
-void pop_op(stack_t **head, unsigned int line_number);
-
-/* Swaps the top two elements of the stack*/
-void swap_op(stack_t **head, unsigned int line_number);
-
-/* Adds the top two elements of the stack*/
-void add_op(stack_t **head, unsigned int line_number);
-
-/* Does nothing*/
-void nop_op(stack_t **head, unsigned int line_number);
-
-/* Subtracts the top element of the stack from the second top element*/
-void sub_op(stack_t **head, unsigned int line_number);
-
-/* Divides the second element of the stack by the top element*/
-void div_op(stack_t **head, unsigned int line_number);
-
-/* Multiplies the second top element with the top element*/
-void mul_op(stack_t **head, unsigned int line_number);
-
-/* computes the rest of the division of the second top element of the-*/
-/* -stack by the top element of the stack.*/
-void mod_op(stack_t **head, unsigned int line_number);
 
 #endif

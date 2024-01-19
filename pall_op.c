@@ -1,19 +1,14 @@
 #include "monty.h"
 
-void pall_op(stack_t **head, unsigned int line_number)
+void pall_op(stack_t **stack, unsigned int line_number)
 {
-	stack_t *temp = var.head;
-	(void)head;
+	stack_t *temp;
+
 	(void)line_number;
+	temp = *stack;
 
-	if (temp == NULL)
-	{
-		return;
-	}
-
-	while (temp != NULL)
+	for (temp = *stack ; temp != NULL ; temp = temp->next)
 	{
 		printf("%d\n", temp->n);
-		temp = temp->next;
 	}
 }

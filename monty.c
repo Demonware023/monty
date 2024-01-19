@@ -1,43 +1,62 @@
-#include <stdio.h>
 #include "monty.h"
 
-/**
-  * main - Entry point to the program.
-  * @argc: Argument count.
-  * @argv: Argument vector.
-  *
-  * Return: 0 or 1
-  */
+FILE *file = NULL;
 
 int main(int argc, char **argv)
 {
-	ssize_t cread;
-	size_t length = 0;
+	void (*f)(stack_t **, unsigned int) = NULL;
+
+	char *buffer = NULL, op[50] = {'\0'}, pushnum[50] = {'\0'}, *token = NULL;
+	size_t bufsize = 0;
+	stack_t *stack = NULL;
 	unsigned int line_number = 1;
 
-	if (argc != 2)
+	if  (argc != 2)
 	{
 		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
+		file = fopen(argv[1], "r");
 	}
-
-	var.monty_file = fopen (argv[1], "r");
-	
-	if (var.monty_file == NULL)
+	if (file == NULL)
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
-
-	while ((cread = getline(&var.buffer, &length, var.monty_file)) != -1)
+	for (; getline(&buffer, &bufsize, file) != EOF ; line_number++)
 	{
-		line_number++;
-		if (var.buffer != NULL)
+		token = strtok((buffer), " \t\n");
+		if (token == NULL)
 		{
-			var.buffer[strlen(var.buffer) - 1] = '\0';
-			get_func(line_number);
+			free(buffer), buffer = NULL;
+			continue;
+		}
+		strcpy(op, token);
+		f = get_func(&stack, line_number, op);
+		if (f == NULL)
+		{
+			fprintf(stderr, "Error: malloc failed\n");
+			err();
+		}
+		if (strcmp(op, "push") == 0)
+		{
+			token = strtok(NULL, " \t\n");
+			if (token == NULL)
+			{
+				free(buffer), buffer = NULL, want_to_be_free(&stack);
+				fprintf(stderr, "L%d: usage: push integer\n", line_number);
+				err();
+			}
+			strcpy(pushnum, token);
+		}
+		free(buffer), buffer = NULL;
+		f(&stack, line_number);
+		
+		if (strcmp(op, "push") == 0)
+		{
+			push(&stack, line_number, pushnum);
 		}
 	}
-	want_to_be_free();
-	exit(EXIT_SUCCESS);
+	free(buffer), fclose(file), want_to_be_free(&stack);
+	
+	return (EXIT_SUCCESS);
 }

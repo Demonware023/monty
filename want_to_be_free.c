@@ -1,24 +1,13 @@
 #include "monty.h"
 
-/**
-  * want_to_be_free - frees the struct var
-  *
-  * Return: void
-  */
-
-void want_to_be_free(void)
+void want_to_be_free(stack_t **stack)
 {
-	stack_t *temp = var.head;
-
-	while (temp)
+	if (stack == NULL || (*stack) == NULL)
 	{
-		var.head = var.head->next;
-		free(temp);
-		temp = var.head;
+		return;
 	}
 
-	if (var.buffer != NULL)
-	{
-		free(var.buffer);
-	}
+	want_to_be_free(&((*stack)->next));
+	free(*stack);
+	*stack = NULL;
 }
